@@ -1,5 +1,5 @@
-- name: install lamp packages
-  become: yes
+- name: install php and some other dependencies
+  become: "yes"
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
       - php5
@@ -16,3 +16,35 @@
       - apache2-mpm-worker
       - libapache2-mod-macro
       - libapache2-mod-fastcgi
+
+- name: install mysql 5.5
+  become: "yes"
+  apt:
+    name: "{{ item }}"
+    state: installed
+    update_cache: "yes"
+  with_items:
+      - mysql-server-5.5
+      - python-mysqldb
+
+- name: add a user 'mysqluser' with all priviledge
+  become: "yes"
+  mysql_user:
+    name: mysqluser
+    host: '%'
+    password: "mysqlpassword"
+    priv: '*.*:ALL'
+    state: present
+
+- name: open firewall port
+  become: "yes"
+  ufw:
+    port: 3306
+    proto: tcp
+    rule: allow
+
+- name: configure mysql
+  become: "yes"
+  service:
+    name: mysql
+    state: restarted
