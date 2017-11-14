@@ -1,0 +1,10 @@
+git_ssh_priv_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  -----END RSA PRIVATE KEY-----
+
+git_ssh_pub_key: ssh-rsa AAAAB3N+EDVdJlvrQlWz2pUUnLR1yRTqqW575hU7SPi5exup+Mhn+GcmVu5u9oiAk43oclRbb5qwrsT4etSLbGEeXjVTbKUGQtAgWM1TsnTNiHIrXYuFKRmVza+VQ/pKsGHZxmdlyoYjCYbKepyQMVKqf5NK1gmRfW8XYEmFDpGtM9kkusv/oDsb/YouR1JqDA/tJuSwRiklaShwqFBF+vzRFofqXcgwWm+f+fDHbXb5uyycL4zERzzxrEqAJLywWIBWVORG5mxtGzVnIYgWsebQ6+Lb9Gs4yhrZVUb3BRzcbsluSYRFYXSpyfvr7EXZwWy2MhKRj mannanmcc@gmail.com
+git_repo: git@github.com:mannanmcc/local-transport.git
+project_path: /var/www/local-transport
+
+DBUSER: mysqluser
+DBPASSWORD: mysqlpassword

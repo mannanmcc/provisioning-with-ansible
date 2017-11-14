@@ -47,3 +47,7 @@ end
       - setup
       - deploy
 ```
+
+
+Until now, we add all the services necessary for running our application.
+Let focus on how to deploy the project on the environment we just setup.
