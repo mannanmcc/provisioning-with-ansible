@@ -22,6 +22,12 @@
     state: absent
     path: "{{ project_path }}/"
 
+- name: create document root folder
+  become: "yes"
+  file:
+    path: "{{ project_path }}"
+    state: directory
+
 - name: Checkout the project
   become: "yes"
   git: repo={{ git_repo }} dest={{ project_path }} accept_hostkey=yes
@@ -67,11 +73,10 @@
 
 - name: Enable apache vhost
   file:
-    src: "/etc/apache2/sites-available/{{ vhost.site_name }}"
-    dest: "/etc/nginx/sites-enabled/{{ vhost.site_name }}"
+    src: "/etc/apache2/sites-available/{{ vhost.site_name }}.conf"
+    dest: "/etc/apache2/sites-enabled/{{ vhost.site_name }}.conf"
     state: link
     force: yes
-  notify: reload apache2
 
 - name: change ownership to document root
   file: dest={{ vhost.document_root }} owner=www-data group=www-data mode=0775 recurse=yes
