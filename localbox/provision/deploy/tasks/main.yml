@@ -14,12 +14,15 @@
         dest=/root/.ssh/id_rsa
         mode=0600
 
+- name: remove default document root
+  file: path='/var/www/html' state=absent
+
 - name: Clean the document root before clone the repo
   file:
     state: absent
     path: "{{ project_path }}/"
 
-- name: Setup the Git repo
+- name: Checkout the project
   become: "yes"
   git: repo={{ git_repo }} dest={{ project_path }} accept_hostkey=yes
 
@@ -52,3 +55,28 @@
   sudo_user: vagrant
   command: creates={{ project_path }}/vendor/ chdir={{ project_path }}
     composer install --quiet --no-ansi --no-interaction
+
+- name: configure vhost based on template
+  become: "yes"
+  template:
+    src: templates/vhost.conf.j2
+    dest: /etc/apache2/sites-available/local-transport.conf
+    owner: root
+    group: root
+    backup: yes
+
+- name: Enable apache vhost
+  file:
+    src: "/etc/apache2/sites-available/{{ vhost.site_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ vhost.site_name }}"
+    state: link
+    force: yes
+  notify: reload apache2
+
+- name: change ownership to document root
+  file: dest={{ vhost.document_root }} owner=www-data group=www-data mode=0775 recurse=yes
+
+- name: enabled mod_rewrite
+  apache2_module: name=rewrite state=present
+  notify:
+      - restart apache2
