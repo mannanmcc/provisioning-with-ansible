@@ -1,17 +1,17 @@
+---
+- name: Updating APT cache
+  apt: update_cache=yes
+
 - name: install apache2
-  become: "yes"
   apt: name=apache2 update_cache=yes state=latest
 
 - name: install PHP module for Apache
   apt: name=libapache2-mod-php5 state=present
-  become: "yes"
 
 - name: enabled mod_rewrite
-  become: "yes"
   apache2_module: name=rewrite state=present
 
 - name: install php and some other dependencies
-  become: "yes"
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
       - php5
@@ -31,7 +31,6 @@
       - git
 
 - name: install mysql 5.5
-  become: "yes"
   apt:
     name: "{{ item }}"
     state: installed
@@ -41,7 +40,6 @@
       - python-mysqldb
 
 - name: add a user 'mysqluser' with all priviledge
-  become: "yes"
   mysql_user:
     name: mysqluser
     host: '%'
@@ -50,14 +48,25 @@
     state: present
 
 - name: open firewall port
-  become: "yes"
   ufw:
     port: 3306
     proto: tcp
     rule: allow
 
 - name: configure mysql
-  become: "yes"
   service:
     name: mysql
     state: restarted
+
+- name: copy ssl private key
+  copy:
+    src: files/ssl/local-transport.local.key
+    dest: /etc/ssl/private/local-transport.local.key
+
+- name: copy ssl certificates
+  copy:
+    src: files/ssl/local-transport.local.crt
+    dest: /etc/ssl/certs/local-transport.local.crt
+
+- name: enable ssl on apache
+  command: a2enmod ssl
