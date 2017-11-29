@@ -1,3 +1,5 @@
+---
+- include_vars: secrets.yml
 
 - name: Create a project folder where project will be deployed
   become: "yes"

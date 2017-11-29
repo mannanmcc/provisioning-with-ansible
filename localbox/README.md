@@ -51,3 +51,16 @@ end
 
 Until now, we add all the services necessary for running our application.
 Let focus on how to deploy the project on the environment we just setup.
+
+Encrypt ssh keys using ansible vault password:
+First of all create a password file ~/vault_pass.txt and keep your password. PLEASE MAKE SURE YOU DO NOT UPLOAD THIS PASSWORD to repository.
+
+Then encrypt your file secrets.yml file which contains ssh keys using following command:
+$ansible-vault encrypt provision/deploy/vars/secrets.yml --vault-password-file ~/.vault_pass.txt
+ This will encrypt content of the file and now it is safe to put on repository and no body can guess what is the actual contents are
+ [You may need to install if it is already not installed yet]
+ $sudo pip install cryptography
+ If the above command does not work, you may also need to upgrade pip $pip install --upgrade pip
+ 
+ Before provisioning you can decrypt using ansible vault
+ $ansible-vault decrypt provision/deploy/vars/secrets.yml --vault-password-file ~/.vault_pass.txtß

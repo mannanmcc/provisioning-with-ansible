@@ -1,33 +1,3 @@
-git_ssh_priv_key: |
-  -----BEGIN RSA PRIVATE KEY-----
-  CORMIskfnjkdIEowIBAAKCAQEAu+41dUmFJiOk/rdXuIHvhA1XSZb60JVs9qVFJy0dckU6qlue
-  +YVO0j4uXsbqfjIZ/hnJlbubvaIgJON6HJUW2+asK7E+HrUi2xhHl41U2ylBkLQI
-  FjNU7J0zYhyK12LhSkZlc2vlUP6SrBh2cZnZcqGIwmGynqckDFSqn+TStYJkX1vF
-  2BJhQ6RrTPZJLrL/6A7G/2KLkdSagwP7SbksEYpJWkocKhQRfr80RaH6l3IMFpvn
-  /nwx212+bssnC+MxEc88axKgCS8sFiAVlTkRuZsbRs1ZyGIFrHm0Ovi2/RrOMoa2
-  VVG9wUc3G7JbkmERWF0qcn76+xF2cFstjISkYwIDAQABAoIBABSldvoLubUW9WmG
-  evyqScYYMR7El4mS4QW34oELU9DaCjftGOoQ2zf93NpMwDZdCr3/10W79sA+r4ld
-  9GxvdLN0BDZIoqp8+/dWE4dy33+0aJ+dJ8ZInWvhWWPN/vLqyhV+5mZn1Cmxzita
-  BKk2Xc1aMcwpL5Z+hldUdepbGUsXd+4+AnLMn6+kP+C7uncxMxfCgIxb2ZOxHfQk
-  pR4cdXecVrEHyVBw96Wi+FSxe/1F0t4cIidf2keUXM/iJGd6uMy0J5DU0go1tJk5
-  y8XoZ0zhY2rKcDKSVUrrRRuzbxiA5JKX48prPt6fmCTKWHPdt0nKZWa8gG+ya+Zm
-  7AEiswECgYEA5pCa3AxfcJGNiuyWffFDCJLlo0dS4WxZ9kwewNeU2utbzE8AMDvQ
-  39uukjD/OP2IQAJGG84Z3tJZ4YJEZu+0bokYkz4WNHnmABgchvTM2bYbd7g1iqz9
-  Xgm2Dd8hes9Oj2VajUG6UiGFWN3NgMpVROO2FqD2vrXxAk0TG+eJFMUCgYEA0KmQ
-  iHyoCv9RfTZuwXcMnSExYKFvBuQ+2YDCMmIoLAbUGHG+LQ92Gzcq39Eoa75B+FAa
-  n7DhslgjkIq29BsTcXzgCbWl2NIjquR4kgzul/fP13Y1ACNEhHZe9J4Y16FIXfdl
-  ZCistTqMuIoJXI07MFAvEhJRXfg5pC39dXt/9wcCgYEA0OdsqLw9LU10Jc+/e1VC
-  G16d2pchLUZzLIpDww6RvNlLT4606P8JfgsZ3TOvy/9LmFN3GnJfVljZP048k9fU
-  b+Kf9alnjRx1nNg74LulcA1kTdEGEiQzXSUHYwIs34097Qc0SJCpNQlSPPaa4Hpz
-  T/vSXCZz6tAHEsKq8bmTptECgYAOaDbHhbvgjoJk39ZD22Fuk/Uh0+OjmSzRvbcq
-  3WYirBIG4gucdt3TwTpfm8RrtAZAC9/auM7MjpNeDoXVUu1Dv7iEUxtxXgkCaqX8
-  h5INwhmCqfG84bKAZt/liejzMnqZqlRA1yIdnT5MG5PL5SB6FH87gzJFB7eLI3XF
-  n9JVDwKBgAQn11NVtpxHEw8cMX6g840RJQrz/QOuKOqQvLkwUeG9xpgh4lhB8iUU
-  Nwa888GUPMgZeMdM0y+Tf4Ow6iaFnl7LeF36nY+tE4driN+CqhXK13oPQsw+wj/D
-  ptFSU8K3XxeK6nF2ethQkbTa3SUl8TNtCNH0pqphI2sAMqpknxeU
-  -----END RSA PRIVATE KEY-----
-
-git_ssh_pub_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC77jV1SYUmI6T+t1e4ge+EDVdJlvrQlWz2pUUnLR1yRTqqW575hU7SPi5exup+Mhn+GcmVu5u9oiAk43oclRbb5qwrsT4etSLbGEeXjVTbKUGQtAgWM1TsnTNiHIrXYuFKRmVza+VQ/pKsGHZxmdlyoYjCYbKepyQMVKqf5NK1gmRfW8XYEmFDpGtM9kkusv/oDsb/YouR1JqDA/tJuSwRiklaShwqFBF+vzRFofqXcgwWm+f+fDHbXb5uyycL4zERzzxrEqAJLywWIBWVORG5mxtGzVnIYgWsebQ6+Lb9Gs4yhrZVUb3BRzcbsluSYRFYXSpyfvr7EXZwWy2MhKRj mannanmcc@gmail.com
 git_repo: git@github.com:mannanmcc/local-transport.git
 project_path: /var/www/local-transport
 
