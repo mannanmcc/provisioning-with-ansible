@@ -2,33 +2,30 @@
 - name: Updating APT cache
   apt: update_cache=yes
 
-- name: install apache2
-  apt: name=apache2 update_cache=yes state=latest
-
-- name: install PHP module for Apache
-  apt: name=libapache2-mod-php5 state=present
-
-- name: enabled mod_rewrite
-  apache2_module: name=rewrite state=present
-
 - name: install php and some other dependencies
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
-      - php5
-      - php5-cli
-      - php5-common
-      - php5-curl
-      - php5-dev
-      - php5-gd
-      - php5-mysql
-      - php5-xsl
-      - php5-mcrypt
-      - php5-intl
-      - php5-fpm
-      - apache2-mpm-worker
-      - libapache2-mod-macro
-      - libapache2-mod-fastcgi
       - git
+      - mcrypt
+      - nginx
+      - php5-cli
+      - php5-curl
+      - php5-fpm
+      - php5-intl
+      - php5-json
+      - php5-mcrypt
+      - php5-mysql
+
+- name: ensure php5-fpm cgi.fix_pathinfo=0
+  lineinfile: dest=/etc/php5/fpm/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+  notify:
+    - restart php5-fpm
+    - restart nginx
+
+- name: enable php5 mcrypt module
+  shell: php5enmod mcrypt
+  args:
+    creates: /etc/php5/cli/conf.d/20-mcrypt.ini
 
 - name: install mysql 5.5
   apt:
@@ -58,15 +55,21 @@
     name: mysql
     state: restarted
 
+- name: create ssl folder
+  become: "yes"
+  file:
+    path: "/etc/nginx/ssl"
+    state: directory
+
 - name: copy ssl private key
   copy:
     src: files/ssl/local-transport.local.key
-    dest: /etc/ssl/private/local-transport.local.key
+    dest: /etc/nginx/ssl/local-transport.local.key
 
 - name: copy ssl certificates
   copy:
     src: files/ssl/local-transport.local.crt
-    dest: /etc/ssl/certs/local-transport.local.crt
-
-- name: enable ssl on apache
-  command: a2enmod ssl
+    dest: /etc/nginx/ssl/local-transport.local.crt
+#
+#- name: enable ssl on apache
+#  command: a2enmod ssl

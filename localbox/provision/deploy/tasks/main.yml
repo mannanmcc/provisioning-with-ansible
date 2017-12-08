@@ -67,26 +67,18 @@
 - name: configure vhost based on template
   become: "yes"
   template:
-    src: templates/vhost.conf.j2
-    dest: /etc/apache2/sites-available/local-transport.conf
+    src: templates/vhost.nginx.conf.j2
+    dest: /etc/nginx/sites-available/local-transport.conf
     owner: root
     group: root
     backup: yes
 
 - name: Enable apache vhost
   file:
-    src: "/etc/apache2/sites-available/{{ vhost.site_name }}.conf"
-    dest: "/etc/apache2/sites-enabled/{{ vhost.site_name }}.conf"
+    src: "/etc/nginx/sites-available/{{ vhost.site_name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ vhost.site_name }}.conf"
     state: link
     force: yes
 
 - name: change ownership to document root
   file: dest={{ vhost.document_root }} owner=www-data group=www-data mode=0775 recurse=yes
-
-- name: enabled mod_rewrite
-  apache2_module: name=rewrite state=present
-
-- name: Restart apache2
-  service:
-    name: apache2
-    state: restarted

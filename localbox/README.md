@@ -63,4 +63,6 @@ $ansible-vault encrypt provision/deploy/vars/secrets.yml --vault-password-file ~
  If the above command does not work, you may also need to upgrade pip $pip install --upgrade pip
  
  Before provisioning you can decrypt using ansible vault
- $ansible-vault decrypt provision/deploy/vars/secrets.yml --vault-password-file ~/.vault_pass.txtß
+ $ansible-vault decrypt provision/deploy/vars/secrets.yml --vault-password-file ~/.vault_pass.txt
+
+ Now replacing apache with Nginx and PHP-FPM
