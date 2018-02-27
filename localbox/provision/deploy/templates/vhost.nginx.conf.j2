@@ -1,0 +1,30 @@
+server {
+    listen 80;
+    server_name {{ vhost.server_name[env] }};
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name {{ vhost.server_name[env] }};
+    root {{ vhost.document_root }}/web;
+
+    ssl_certificate /etc/nginx/ssl/local-transport.local.crt;
+    ssl_certificate_key /etc/nginx/ssl/local-transport.local.key;
+
+    error_log /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+
+    location / {
+        rewrite (.+)\.\d+\.(js|css|png|jpg|gif)$ $1.$2;
+        try_files $uri /app.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index app.php;
+    }
+}

@@ -1,0 +1,84 @@
+---
+- include_vars: secrets.yml
+
+- name: Create a project folder where project will be deployed
+  become: "yes"
+  file: dest={{ project_path }} state=directory owner=www-data group=www-data mode=0700
+
+- name: Create the SSH public key file
+  copy: content="{{ git_ssh_pub_key }}"
+        dest=/root/.ssh/id_rsa.pub
+        mode=0644
+
+- name: Create the SSH private key file
+  become: "yes"
+  copy: content="{{ git_ssh_priv_key }}"
+        dest=/root/.ssh/id_rsa
+        mode=0600
+
+- name: remove default document root
+  file: path='/var/www/html' state=absent
+
+- name: Clean the document root before clone the repo
+  file:
+    state: absent
+    path: "{{ project_path }}/"
+
+- name: create document root folder
+  become: "yes"
+  file:
+    path: "{{ project_path }}"
+    state: directory
+
+- name: Checkout the project
+  become: "yes"
+  git: repo={{ git_repo }} dest={{ project_path }} accept_hostkey=yes
+
+- name: install composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  args:
+    creates: /usr/local/bin/composer
+
+#- name: Install Composer's dependencies
+#  become: "yes"
+#  become_user: "www-data"
+#  composer:
+#    working_dir: "{{ project_path }}"
+
+- name: create parameters.yml based on parameters.yml.dist
+  sudo_user: vagrant
+  command: creates={{ project_path }}/app/config/parameters.yml
+    cp {{ project_path }}/app/config/parameters.yml.dist {{ project_path }}/app/config/parameters.yml
+
+- name: update parameters.yml database user
+  replace: > # see https://github.com/ansible/ansible/issues/2769
+    dest={{ project_path }}/app/config/parameters.yml
+    regexp="{{ item.key }}:.+$"
+    replace='{{ item.key }}: {{ item.value }}'
+  with_items:
+    - {key: database_user, value: "{{ DBUSER }}" }
+    - {key: database_password, value: "{{ DBPASSWORD }}"}
+
+- name: install app dependencies (composer install)
+  sudo_user: vagrant
+  command: creates={{ project_path }}/vendor/ chdir={{ project_path }}
+    composer install --quiet --no-ansi --no-interaction
+
+- name: configure vhost based on template
+  become: "yes"
+  template:
+    src: templates/vhost.nginx.conf.j2
+    dest: /etc/nginx/sites-available/local-transport.conf
+    owner: root
+    group: root
+    backup: yes
+
+- name: Enable apache vhost
+  file:
+    src: "/etc/nginx/sites-available/{{ vhost.site_name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ vhost.site_name }}.conf"
+    state: link
+    force: yes
+
+- name: change ownership to document root
+  file: dest={{ vhost.document_root }} owner=www-data group=www-data mode=0775 recurse=yes

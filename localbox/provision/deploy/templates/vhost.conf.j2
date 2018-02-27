@@ -1,0 +1,25 @@
+<VirtualHost *:443>
+    ServerName {{ vhost.server_name[env] }}
+    ServerAlias domain.com.localhost
+    ServerAdmin webmaster@localhost
+
+    DocumentRoot {{ vhost.document_root }}/web
+    CustomLog /var/log/apache2/access.log combined
+
+    SSLEngine on
+    SSLCertificateFile    /etc/ssl/certs/local-transport.local.crt
+    SSLCertificateKeyFile /etc/ssl/private/local-transport.local.key
+
+    <Directory {{ vhost.document_root }}/web/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride all
+        Order allow,deny
+        Allow from all
+        Require all granted
+        <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^(.*)$ /{{ vhost.site_index_file[env] }}.php [QSA,L]
+        </IfModule>
+    </Directory>
+</VirtualHost>
